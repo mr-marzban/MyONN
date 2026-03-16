@@ -71,15 +71,25 @@ where *F / F⁺* are the (I)DFT, *P^m* the free-space propagation kernel, and
 
 ### Training
 
-Phase profiles are optimised offline (on a computer) using the **adjoint method**
-paired with the **ADAM optimiser**. The adjoint technique reduces each gradient-descent
-iteration to exactly **one forward pass** + **one backward adjoint pass**, making
-training of large networks tractable.
+Phase profiles are optimised offline using the **adjoint method** paired with the
+**ADAM optimiser**. A cost function *C* measures the squared error between the
+desired and realised output intensity distributions (Eq. 2 of the paper):
 
-$$\frac{dC}{d\bar{\phi}^{w^m}} = -4\,\mathrm{Re}\!\left\{ i\left(E^{m-1,k+}\right)^T \otimes \left(\prod_{m'=0}^{M-m} \Phi^{w^{M-m'}+} F^+ P^{M-m'+} F\right) a \right\}$$
+$$C = \sum_{k=1}^{K} \sum_{s=1}^{N^2} \bigl(I_s^k - I_s^{\text{des},k}\bigr)^2$$
 
-Once training is finished the network is **entirely passive** — inference requires no power
-beyond the optical input.
+Gradients with respect to the phase of each metaline are obtained via the chain rule
+(Eq. 3):
+
+$$\frac{dC}{dw^m} = \frac{d\,\vec{\phi}^{\,w^m}}{dw^m} \otimes \frac{dC}{d\,\vec{\phi}^{\,w^m}}$$
+
+The key gradient term (Eq. 5) is evaluated by back-propagating an **adjoint field**
+*a* = *E*<sup>out,k</sup> ⊗ (*I*<sup>k</sup> − *I*<sup>des,k</sup>) through the system:
+
+$$\frac{dC}{d\vec{\phi}^{\,w^m}} = -4\,\mathrm{Re}\!\left[\, i \bigl(E^{m-1,k\,*}\bigr)^{\!T} \otimes \left(\prod_{m'=0}^{M-m} \Phi^{w^{M-m'}\,*} F^{+} P^{M-m'+} F\right) a \,\right]$$
+
+This reduces each iteration to **one forward pass + one adjoint backward pass**,
+making training of large networks tractable. Once training is finished the network is
+**entirely passive** — inference requires no power beyond the optical input.
 
 ---
 
@@ -106,22 +116,40 @@ These phase maps directly specify the slot lengths that need to be fabricated.
 
 ---
 
-### Electric-field distribution (Lumerical MODE verification)
+### Electric-field distribution — design verification
 
-The figures below show the x–y electric-field distribution inside the simulated ONN
-for three representative MNIST test digits. The field is steered towards the correct
-detector at the right-hand output plane.
+The figures below show the x–y electric-field intensity distribution inside the
+fabricated-geometry ONN for representative MNIST test digits (corresponding to
+Figs. 10 & 12 of the paper). For each input, the guided field is progressively
+focused towards the correct output detector position by the cascaded metaline layers.
+
+**Digit 4 — propagating through the 3-layer ONN:**
+
+![E-field digit 4](sample_figs_demo/efield_digit_4.png)
+
+*x–y |E|-field distribution of the 3-layer ONN for input digit "4". The maximum
+intensity at the output plane (right edge) falls on detector 4, giving a correct
+prediction.*
+
+---
+
+**Digit 5 and digit 2:**
 
 | Digit **5** | Digit **2** |
 |:-----------:|:-----------:|
 | ![Digit 5](sample_figs_demo/efield_digit_5.png) | ![Digit 2](sample_figs_demo/efield_digit_2.png) |
 
-| Digit **6** | Digit **4** |
-|:-----------:|:-----------:|
-| ![Digit 6](sample_figs_demo/efield_digit_6.png) | ![Digit 4](sample_figs_demo/efield_digit_4.png) |
+*Left: digit "5" — the field converges to detector 5 at the output. Right: digit "2" — field converges to detector 2.*
 
-*Each panel: input digit (left) and x–y E-field through the 3-layer ONN (right).
-The highlighted detector at the far right corresponds to the predicted class.*
+---
+
+**Digit 6:**
+
+![E-field digit 6](sample_figs_demo/efield_digit_6.png)
+
+*Digit "6" — field steered to detector 6 at the output plane.*
+
+The 3-layer analytical model and the full electromagnetic simulation agree in **91 out of 100** tested cases, confirming the accuracy of the free-space propagation model used during training.
 
 ---
 
@@ -139,7 +167,7 @@ visual similarity and the findings reported in the paper (Fig. 6c).
 ## Installation
 
 ```bash
-git clone https://github.com/mmarzban3/MyONN.git
+git clone https://github.com/mr-marzban/MyONN.git
 cd MyONN
 
 python -m venv venv
@@ -148,9 +176,8 @@ source venv/bin/activate   # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-> **Lumerical MODE** is required only for FDTD verification (Cells 2 / 24 in the
-> original notebook). The analytical electromagnetic model and all training code
-> run without it.
+> The analytical electromagnetic model and all training code run with standard
+> Python packages only (NumPy, TensorFlow/Keras, scikit-learn, OpenCV).
 
 ---
 
@@ -222,7 +249,3 @@ pytest tests/ -v
 
 ---
 
-## Acknowledgements
-
-This work was supported by Sharif University of Technology and the
-Iran National Science Foundation (grant 98012500).
