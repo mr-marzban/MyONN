@@ -221,8 +221,7 @@ pytest tests/ -v
 ## Contact
 
 - **Author**: Mahmood-Reza Marzban
-- **Affiliation**: Department of Electrical Engineering, Sharif University of Technology
-- **GitHub**: [@MR-MZN](https://github.com/MR-MZN)
+- **GitHub**: [@mr-marzban](https://github.com/mr-marzban)
 
 ---
 
