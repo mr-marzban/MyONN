@@ -53,20 +53,18 @@ Phase profiles are optimised offline using the **adjoint method** paired with th
 **ADAM optimiser**. A cost function *C* measures the squared error between the
 desired and realised output intensity distributions (Eq. 2 of the paper):
 
-$$C = \sum_{k=1}^{K} \sum_{s=1}^{N^2} \bigl(I_s^k - I_s^{\text{des},k}\bigr)^2$$
+$$C = \sum_{k=1}^{K} \sum_{s=1}^{N^2} \left(I_s^k - I_s^{\text{des},k}\right)^2$$
 
 Gradients with respect to the phase of each metaline are obtained via the chain rule
 (Eq. 3):
 
 $$\frac{dC}{dw^m} = \frac{d\,\vec{\phi}^{\,w^m}}{dw^m} \otimes \frac{dC}{d\,\vec{\phi}^{\,w^m}}$$
 
-The key gradient term (Eq. 5) is evaluated by back-propagating an **adjoint field**
-*a* = *E*<sup>out,k</sup> ⊗ (*I*<sup>k</sup> − *I*<sup>des,k</sup>) through the system:
+The key gradient term (Eq. 5) is evaluated by back-propagating an **adjoint field** *a* through the system:
 
-$$\frac{dC}{d\vec{\phi}^{\,w^m}} = -4\,\mathrm{Re}\!\left[\, i \bigl(E^{m-1,k\,*}\bigr)^{\!T} \otimes \left(\prod_{m'=0}^{M-m} \Phi^{w^{M-m'}\,*} F^{+} P^{M-m'+} F\right) a \,\right]$$
+$$\frac{dC}{d\vec{\phi}^{w^m}} = -4\,\mathrm{Re}\left[ i \left(E^{m-1,k+}\right)^{T} \otimes \left(\prod_{m'=0}^{M-m} \Phi^{w^{M-m'}+} F^{+} P^{M-m'+} F\right) a \right]$$
 
-This reduces each iteration to **one forward pass + one adjoint backward pass**,
-making training of large networks tractable. Once training is finished the network is
+where *a* = *E*<sup>out,k</sup> ⊗ (*I*<sup>k</sup> − *I*<sup>des,k</sup>). This reduces each iteration to **one forward pass + one adjoint backward pass**, making training of large networks tractable. Once training is finished the network is
 **entirely passive** — inference requires no power beyond the optical input.
 
 ---
@@ -76,7 +74,7 @@ making training of large networks tractable. Once training is finished the netwo
 ### Training convergence
 
 The cost decreases and test accuracy rises steadily over 50 epochs, reaching **~78 % on
-the reduced 3-layer structure** (verified with Lumerical 2.5D FDTD) and **88.8 % on the
+the reduced 3-layer structure** and **88.8 % on the
 full 5-layer design**.
 
 ![Training Curves](sample_figs_demo/training_curves.png)
@@ -217,8 +215,22 @@ pytest tests/ -v
 | Latency | 7.78 ps | ~ns | ~ns |
 | Alignment | On-chip (lithography) | On-chip | Manual (free-space) |
 
+
 ---
-## Paper
+
+## Contact
+
+- **Author**: Mahmood-Reza Marzban
+- **Affiliation**: Department of Electrical Engineering, Sharif University of Technology
+- **GitHub**: [@MR-MZN](https://github.com/MR-MZN)
+
+---
+
+---
+
+## Citation
+
+If you use this work, please cite:
 
 > **Mahmood-Reza Marzban**, Sanaz Zarei, and Amin Khavasi,
 > *"Integrated photonic neural network based on silicon metalines,"*
@@ -238,14 +250,3 @@ pytest tests/ -v
   url       = {https://opg.optica.org/oe/fulltext.cfm?uri=oe-28-24-36668}
 }
 ```
-
----
-
-## Contact
-
-- **Author**: Mahmood-Reza Marzban
-- **Affiliation**: Department of Electrical Engineering, Sharif University of Technology
-- **GitHub**: [@mmarzban3](https://github.com/mmarzban3)
-
----
-
