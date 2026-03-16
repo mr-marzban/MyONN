@@ -7,28 +7,6 @@ of light, with near-zero power consumption during inference.
 
 ---
 
-## Paper
-
-> **Mahmood-Reza Marzban**, Sanaz Zarei, and Amin Khavasi,
-> *"Integrated photonic neural network based on silicon metalines,"*
-> **Optics Express 28(24), 36668 (2020).**
-> https://doi.org/10.1364/OE.404386
-
-```bibtex
-@article{Marzban2020ONN,
-  author    = {Marzban, Mahmood-Reza and Zarei, Sanaz and Khavasi, Amin},
-  title     = {Integrated photonic neural network based on silicon metalines},
-  journal   = {Optics Express},
-  volume    = {28},
-  number    = {24},
-  pages     = {36668},
-  year      = {2020},
-  doi       = {10.1364/OE.404386},
-  url       = {https://opg.optica.org/oe/fulltext.cfm?uri=oe-28-24-36668}
-}
-```
-
----
 
 ## Overview
 
@@ -238,6 +216,28 @@ pytest tests/ -v
 | Footprint | 0.32 mm² | > 10 mm² | cm-scale |
 | Latency | 7.78 ps | ~ns | ~ns |
 | Alignment | On-chip (lithography) | On-chip | Manual (free-space) |
+
+---
+## Paper
+
+> **Mahmood-Reza Marzban**, Sanaz Zarei, and Amin Khavasi,
+> *"Integrated photonic neural network based on silicon metalines,"*
+> **Optics Express 28(24), 36668 (2020).**
+> https://doi.org/10.1364/OE.404386
+
+```bibtex
+@article{Marzban2020ONN,
+  author    = {Marzban, Mahmood-Reza and Zarei, Sanaz and Khavasi, Amin},
+  title     = {Integrated photonic neural network based on silicon metalines},
+  journal   = {Optics Express},
+  volume    = {28},
+  number    = {24},
+  pages     = {36668},
+  year      = {2020},
+  doi       = {10.1364/OE.404386},
+  url       = {https://opg.optica.org/oe/fulltext.cfm?uri=oe-28-24-36668}
+}
+```
 
 ---
 
