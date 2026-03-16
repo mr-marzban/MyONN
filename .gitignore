@@ -1,0 +1,58 @@
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE
+.idea/
+.vscode/
+*.spyderproject
+.ropeproject/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Outputs / results (not committed)
+outputs/
+output/
+Images/
+images/
+runs/
+logs/
+wandb/
+
+# Saved model / phase files (large or generated)
+Slot_length_mask/
+Phase_Target/
+
+# Model weights
+*.h5
+*.hdf5
+*.pkl
+*.pth
+*.ckpt
+
+# Lumerical project files (proprietary)
+*.lms
+*.ldf
+
+# Temporary
+*.log
+*.tmp
+*.temp
+*.swp
+*~
